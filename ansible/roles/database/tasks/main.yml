@@ -1,0 +1,33 @@
+- name: Create docker backend network
+  community.docker.docker_network:
+    name: backend-network
+  
+- name: Create directory for Docker Compose file
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/db
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy docker-compose.yml
+  ansible.builtin.copy:
+    src: files/docker-compose.yml
+    dest: /home/{{ ansible_user }}/db/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Copy .env file
+  ansible.builtin.copy:
+    src: files/.env
+    dest: /home/{{ ansible_user }}/db/.env
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Run Docker Compose
+  ansible.builtin.shell: docker-compose up -d
+  args:
+    chdir: /home/{{ ansible_user }}/db
+
