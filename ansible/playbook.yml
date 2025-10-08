@@ -1,0 +1,9 @@
+- name: Setup infrastructure for backend server
+  hosts: backend-server
+  become: true
+
+  vars_files:
+    - vars/vault.yml
+    
+  roles:
+    - common
