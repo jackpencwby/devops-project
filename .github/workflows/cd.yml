@@ -40,12 +40,12 @@ jobs:
             --name nestjs \
             --network backend-network \
             -e NODE_ENV=production \
-            -e PORT=${{ secrets.PORT }} \
-            -e POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
-            -e POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
-            -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
-            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
-            -e POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }} \
+            -e PORT="${{ secrets.PORT }}" \
+            -e POSTGRES_HOST="${{ secrets.POSTGRES_HOST }}" \
+            -e POSTGRES_PORT="${{ secrets.POSTGRES_PORT }}" \
+            -e POSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
+            -e POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
+            -e POSTGRES_DATABASE="${{ secrets.POSTGRES_DATABASE }}" \
             -p 8000:8000 \
             ${{ secrets.DOCKER_USERNAME }}/devops-project:latest
 
