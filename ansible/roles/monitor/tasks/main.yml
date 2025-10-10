@@ -1,0 +1,56 @@
+- name: Create docker backend network
+  community.docker.docker_network:
+    name: monitoring-network
+
+- name: Connect NestJS container to monitoring network
+  community.docker.docker_network:
+    name: monitoring-network
+    connected:
+      - nestjs
+
+- name: Create directory for Docker Compose file
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/monitor
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy docker-compose.yml
+  ansible.builtin.copy:
+    src: files/docker-compose.yml
+    dest: /home/{{ ansible_user }}/monitor/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Copy .env file
+  ansible.builtin.copy:
+    src: files/.env
+    dest: /home/{{ ansible_user }}/monitor/.env
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Create Prometheus directory
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/monitor/prometheus
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy Prometheus configuration
+  ansible.builtin.copy:
+    src: files/prometheus/prometheus.yml
+    dest: /home/{{ ansible_user }}/monitor/prometheus/prometheus.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Run Docker Compose
+  ansible.builtin.shell: docker-compose up -d
+  args:
+    chdir: /home/{{ ansible_user }}/monitor
+
+

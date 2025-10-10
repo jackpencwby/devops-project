@@ -11,3 +11,4 @@
     - docker
     - database
     # - nginx-certbot
+    - monitor
